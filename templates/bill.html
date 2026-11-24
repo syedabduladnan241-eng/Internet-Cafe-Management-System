@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Bill Receipt</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+
+        body{
+            background:#f8f9fa;
+        }
+
+        .card{
+            margin-top:50px;
+            border:none;
+            box-shadow:0 4px 15px rgba(0,0,0,.1);
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="row justify-content-center">
+
+<div class="col-md-8">
+
+<div class="card">
+
+<div class="card-header bg-success text-white">
+
+<h2>🧾 Internet Café Receipt</h2>
+
+</div>
+
+<div class="card-body">
+
+<table class="table table-bordered">
+
+<tr>
+<th>Customer Name</th>
+<td>{{ bill[0] }}</td>
+</tr>
+
+<tr>
+<th>Computer</th>
+<td>{{ bill[1] }}</td>
+</tr>
+
+<tr>
+<th>Start Time</th>
+<td>{{ bill[2] }}</td>
+</tr>
+
+<tr>
+<th>End Time</th>
+<td>{{ bill[3] }}</td>
+</tr>
+
+<tr>
+<th>Duration (Hours)</th>
+<td>{{ bill[4] }}</td>
+</tr>
+
+<tr>
+<th>Total Amount</th>
+<td><strong>₹ {{ bill[5] }}</strong></td>
+</tr>
+
+</table>
+
+<div class="mt-4">
+
+<button class="btn btn-success" onclick="window.print()">
+
+🖨 Print Receipt
+
+</button>
+
+<a href="/dashboard" class="btn btn-primary">
+
+🏠 Dashboard
+
+</a>
+
+<a href="/active_sessions" class="btn btn-secondary">
+
+🟢 Active Sessions
+
+</a>
+
+</div>
+
+</div>
+
+<div class="card-footer text-center">
+
+<b>Thank you for visiting Internet Café!</b>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+
+</html>

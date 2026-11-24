@@ -1,0 +1,444 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard | Internet Café Management</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .sidebar {
+            position: fixed;
+            width: 250px;
+            height: 100vh;
+            background: #172033;
+            color: white;
+            padding: 25px 15px;
+            display: flex;
+            flex-direction: column;
+            z-index: 10;
+        }
+
+        .brand {
+            font-size: 19px;
+            font-weight: bold;
+            padding: 10px;
+            margin-bottom: 30px;
+        }
+
+        .brand span {
+            color: #60a5fa;
+        }
+
+        .nav-links a {
+            display: block;
+            color: #cbd5e1;
+            text-decoration: none;
+            padding: 14px;
+            margin-bottom: 7px;
+            border-radius: 8px;
+            transition: 0.2s;
+            font-size: 14px;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            background: #2563eb;
+            color: white;
+        }
+
+        .logout-form {
+            margin-top: auto;
+        }
+
+        .logout-btn {
+            width: 100%;
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 13px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .logout-btn:hover {
+            background: #b91c1c;
+        }
+
+        .main {
+            margin-left: 250px;
+            padding: 30px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .topbar h1 {
+            font-size: 27px;
+        }
+
+        .welcome {
+            color: #64748b;
+            font-size: 14px;
+            margin-top: 6px;
+        }
+
+        .admin {
+            background: white;
+            padding: 12px 18px;
+            border-radius: 9px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .messages {
+            margin-bottom: 20px;
+        }
+
+        .message {
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .success {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .danger {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 13px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.04);
+            border-left: 4px solid #2563eb;
+            transition: 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+        }
+
+        .card-icon {
+            font-size: 27px;
+            margin-bottom: 17px;
+        }
+
+        .card h3 {
+            color: #64748b;
+            font-size: 14px;
+            font-weight: normal;
+            margin-bottom: 12px;
+        }
+
+        .card p {
+            font-size: 29px;
+            font-weight: bold;
+            color: #172033;
+        }
+
+        .card:nth-child(2) {
+            border-color: #16a34a;
+        }
+
+        .card:nth-child(3) {
+            border-color: #f59e0b;
+        }
+
+        .card:nth-child(4) {
+            border-color: #9333ea;
+        }
+
+        .section {
+            background: white;
+            border-radius: 13px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.04);
+        }
+
+        .section h2 {
+            font-size: 19px;
+            margin-bottom: 20px;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .action {
+            padding: 20px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #1e293b;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .action:hover {
+            background: #eff6ff;
+            border-color: #2563eb;
+            color: #2563eb;
+        }
+
+        .action span {
+            display: block;
+            font-size: 25px;
+            margin-bottom: 10px;
+        }
+
+        .footer {
+            text-align: center;
+            color: #94a3b8;
+            padding: 20px;
+            font-size: 13px;
+        }
+
+        @media (max-width: 1100px) {
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 700px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .brand {
+                margin-bottom: 12px;
+            }
+
+            .nav-links {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 5px;
+            }
+
+            .logout-form {
+                margin-top: 15px;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            ☕ Café<span>Manager</span>
+        </div>
+
+        <nav class="nav-links">
+
+            <a href="{{ url_for('dashboard') }}" class="active">
+                🏠 Dashboard
+            </a>
+
+            <a href="{{ url_for('customers') }}">
+                👥 Customers
+            </a>
+
+            <a href="{{ url_for('add_customer') }}">
+                ➕ Add Customer
+            </a>
+
+            <a href="{{ url_for('start_session') }}">
+                💻 Start Session
+            </a>
+
+            <a href="{{ url_for('active_sessions') }}">
+                ⏱️ Active Sessions
+            </a>
+
+            <a href="{{ url_for('billing') }}">
+                🧾 Billing
+            </a>
+
+            <a href="{{ url_for('reports') }}">
+                📊 Reports
+            </a>
+
+        </nav>
+
+        <form action="{{ url_for('logout') }}" method="POST"
+              class="logout-form">
+            <button type="submit" class="logout-btn">
+                ↪ Logout
+            </button>
+        </form>
+
+    </aside>
+
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <div>
+                <h1>Dashboard</h1>
+                <p class="welcome">
+                    Welcome to your Internet Café Management System.
+                </p>
+            </div>
+
+            <div class="admin">
+                👤 {{ session.get('admin_username', 'Admin') }}
+            </div>
+
+        </header>
+
+
+        <!-- Flash Messages -->
+
+        <div class="messages">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="message {{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
+
+        <!-- Dashboard Statistics -->
+
+        <section class="cards">
+
+            <div class="card">
+                <div class="card-icon">👥</div>
+                <h3>Total Customers</h3>
+                <p>{{ total_customers }}</p>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">💻</div>
+                <h3>Active Sessions</h3>
+                <p>{{ active_sessions }}</p>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">💰</div>
+                <h3>Total Revenue</h3>
+                <p>₹{{ "%.2f"|format(total_revenue) }}</p>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">📊</div>
+                <h3>Total Sessions</h3>
+                <p>{{ total_sessions }}</p>
+            </div>
+
+        </section>
+
+
+        <!-- Quick Actions -->
+
+        <section class="section">
+
+            <h2>Quick Actions</h2>
+
+            <div class="quick-actions">
+
+                <a href="{{ url_for('add_customer') }}" class="action">
+                    <span>➕</span>
+                    Add New Customer
+                </a>
+
+                <a href="{{ url_for('start_session') }}" class="action">
+                    <span>💻</span>
+                    Start Computer Session
+                </a>
+
+                <a href="{{ url_for('active_sessions') }}" class="action">
+                    <span>⏱️</span>
+                    View Active Sessions
+                </a>
+
+                <a href="{{ url_for('customers') }}" class="action">
+                    <span>👥</span>
+                    Manage Customers
+                </a>
+
+                <a href="{{ url_for('billing') }}" class="action">
+                    <span>🧾</span>
+                    View Billing History
+                </a>
+
+                <a href="{{ url_for('reports') }}" class="action">
+                    <span>📈</span>
+                    View Reports
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <div class="footer">
+            Internet Café Management System © 2026
+        </div>
+
+    </main>
+
+</body>
+</html>

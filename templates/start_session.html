@@ -1,0 +1,300 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Start Session | Internet Café</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        body {
+            background: #f1f5f9;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+        }
+
+        .page-container {
+            max-width: 750px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 22px;
+            text-decoration: none;
+            color: #2563eb;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            color: #1d4ed8;
+        }
+
+        .form-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.07);
+        }
+
+        .card-header-custom {
+            background: linear-gradient(135deg, #2563eb, #4f46e5);
+            color: white;
+            padding: 30px;
+        }
+
+        .card-header-custom h1 {
+            font-size: 27px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .card-header-custom p {
+            margin: 0;
+            opacity: 0.9;
+        }
+
+        .form-content {
+            padding: 35px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #334155;
+        }
+
+        .form-group select {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 9px;
+            background: #fff;
+            font-size: 15px;
+            color: #334155;
+            outline: none;
+        }
+
+        .form-group select:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+        }
+
+        .info-box {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #1e40af;
+            padding: 15px;
+            border-radius: 9px;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        .btn-start {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 9px;
+            background: #2563eb;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-start:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .message {
+            padding: 13px;
+            margin-bottom: 18px;
+            border-radius: 8px;
+        }
+
+        .message.success {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .message.danger {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .message.warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .empty-state {
+            padding: 25px;
+            background: #f8fafc;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .footer-text {
+            text-align: center;
+            color: #94a3b8;
+            font-size: 13px;
+            margin-top: 25px;
+        }
+
+        @media(max-width: 576px) {
+            .page-container {
+                margin: 20px auto;
+            }
+
+            .form-content {
+                padding: 22px;
+            }
+
+            .card-header-custom {
+                padding: 23px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page-container">
+
+    <a class="back-link" href="{{ url_for('dashboard') }}">
+        ← Back to Dashboard
+    </a>
+
+    <div class="form-card">
+
+        <div class="card-header-custom">
+            <h1>🖥 Start New Session</h1>
+            <p>Create a new customer computer session.</p>
+        </div>
+
+        <div class="form-content">
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="message {{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            {% if customers and computers %}
+
+                <div class="info-box">
+                    ℹ️ Select a registered customer and an available computer to begin.
+                </div>
+
+                <form action="{{ url_for('save_session') }}" method="POST">
+
+                    <div class="form-group">
+
+                        <label for="customer_id">
+                            👤 Select Customer
+                        </label>
+
+                        <select name="customer_id" id="customer_id" required>
+
+                            <option value="">-- Choose Customer --</option>
+
+                            {% for customer in customers %}
+
+                                <option value="{{ customer['id'] }}">
+                                    {{ customer['name'] }} - {{ customer['phone'] }}
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="computer">
+                            💻 Select Available Computer
+                        </label>
+
+                        <select name="computer" id="computer" required>
+
+                            <option value="">-- Choose Computer --</option>
+
+                            {% for computer in computers %}
+
+                                <option value="{{ computer }}">
+                                    {{ computer }}
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+                    <button type="submit" class="btn-start">
+                        ▶ Start Session
+                    </button>
+
+                </form>
+
+            {% else %}
+
+                <div class="empty-state">
+
+                    {% if not customers %}
+
+                        <h5>No Customers Found</h5>
+
+                        <p>Please add a customer before starting a session.</p>
+
+                        <a href="{{ url_for('add_customer') }}"
+                           class="btn btn-primary">
+                            + Add Customer
+                        </a>
+
+                    {% endif %}
+
+                    {% if not computers %}
+
+                        <h5>No Computers Available</h5>
+
+                        <p>All computers are currently occupied.</p>
+
+                    {% endif %}
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    <div class="footer-text">
+        Internet Café Management System
+        <br>
+        Session Management
+    </div>
+
+</div>
+
+</body>
+</html>
